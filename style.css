@@ -1,0 +1,174 @@
+@media only screen and (max-width: 600px) {
+  /* reduce the font size for all text */
+  body {
+    width: 100%;
+  }
+
+  /* increase the size of buttons for easier tapping on mobile devices */
+  button {
+    padding: 10px 20px;
+  }
+
+  /* make sure images don't overflow their container */
+  img {
+    max-width: 100%;
+  }
+
+  /* stack navigation items vertically instead of horizontally */
+  nav ul {
+    flex-direction: column;
+  }
+
+  /* hide non-essential elements on small screens */
+  .hide-on-small {
+    display: none;
+  }
+
+}
+
+.navbar {
+  background-color:rgba(0, 0, 0, 0.596);
+  position: fixed;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  display: flex;
+  padding: 0 10px;
+  bottom: 0;
+  overflow: hidden;
+}
+
+.navbar form {
+  display: flex;
+  align-items: center;
+}
+#searchInput {
+  background-color: #fff;
+  border: none;
+  border-radius: 5px 0 0 5px;
+  padding: 10px;
+  font-size: 14px;
+  outline: none;
+  margin: 0;
+  float: right;
+  background-color: rgba(128, 0, 128, 0.5);
+  color: white;
+  text-shadow: 0 0 10px purple;
+  box-shadow: 0 0 10px white;
+  transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  }
+  
+  #searchInput:hover {
+  background-color: rgba(128, 0, 128, 0.7);
+  box-shadow: 0 0 20px white;
+  }
+
+#glow-box {
+  background-color: transparent;
+  color: white;
+  text-shadow: 0 0 5px rgb(150, 34, 165), 0 0 5px rgba(128, 0, 128, 0.288);
+  outline: 9px rgba(128, 0, 128, 0.288);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  padding-left: 1%;
+}
+
+#random-scroll-button {
+  background-color: rgba(128, 0, 128, 0.5);
+  color: white;
+  text-shadow: 0 0 10px purple;
+  box-shadow: 0 0 10px white;
+  display: flex;
+  margin: 10px;
+  border-radius: 50%;
+}
+#random-scroll-button:hover {
+  box-shadow: 0 0 45px rgb(255, 96, 96);
+}
+#glow-box-home {
+  background-color: rgba(128, 0, 128, 0.5);
+  color: white;
+  text-shadow: 0 0 10px purple;
+  box-shadow: 0 0 10px white;
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#glow-box-home:hover {
+  box-shadow: 0 0 15px rgb(199, 43, 219);
+}
+
+button {
+  background-color: #000;
+  border: none;
+  border-radius: 0 5px 5px 0;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: none;
+}
+
+button:hover {
+  box-shadow: 0 0 10px white;
+}
+
+/* padding to the body to avoid covering content with the navbar */
+body {
+  padding-top: 50px;
+}
+
+.jumbotron {
+  background-color: #e9ecef;
+  text-align: center;
+  padding: 5% 10%;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.jumbotron h1 {
+  font-size: 3em;
+  font-weight: bold;
+  color: #495057;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.jumbotron p {
+  font-size: 1.5em;
+  color: #868e96;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2em;
+}
+
+.jumbotron hr {
+  border-top: 1px solid #868e96;
+  margin-top: 2em;
+  margin-bottom: 2em;
+  width: 50%;
+}
+.selected-div {
+  box-shadow: 0 0 10px 3px purple;
+}
+.footer {
+  position: bottom;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: rgb(118, 102, 102);
+  color: white;
+  text-align: center;
+}
+.homefooter {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: rgb(118, 102, 102);
+}
