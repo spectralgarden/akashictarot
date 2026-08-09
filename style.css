@@ -1,174 +1,371 @@
-@media only screen and (max-width: 600px) {
-  /* reduce the font size for all text */
-  body {
-    width: 100%;
-  }
-
-  /* increase the size of buttons for easier tapping on mobile devices */
-  button {
-    padding: 10px 20px;
-  }
-
-  /* make sure images don't overflow their container */
-  img {
-    max-width: 100%;
-  }
-
-  /* stack navigation items vertically instead of horizontally */
-  nav ul {
-    flex-direction: column;
-  }
-
-  /* hide non-essential elements on small screens */
-  .hide-on-small {
-    display: none;
-  }
-
+/* ==========================================================================
+   Design System & Global Variables
+   ========================================================================== */
+:root {
+  /* Soft Mystic Color Palette */
+  --bg-main: #fbf9f6;          /* Alabaster cream */
+  --bg-card: #ffffff;          /* Soft card white */
+  --color-lavender: #f2edf8;   /* Pale spiritual lavender */
+  --color-rose: #faf0f2;       /* Soft dusty rose */
+  --color-gold: #f4edd9;       /* Light antique gold tint */
+  --accent-purple: #967bb6;    /* Medium muted amethyst */
+  
+  /* Text and Borders */
+  --text-main: #3c3442;        /* Dark plum charcoal */
+  --text-muted: #75687d;       /* Mauve gray */
+  --border-pale: #ebe2f0;      /* Soft lavender gray borders */
+  
+  /* Glow Effects and Shadows */
+  --shadow-subtle: 0 4px 20px rgba(117, 104, 125, 0.06);
+  --shadow-hover: 0 10px 30px rgba(150, 123, 182, 0.12);
+  --glow-active: 0 0 25px rgba(150, 123, 182, 0.4);
+  --transition-smooth: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-.navbar {
-  background-color:rgba(0, 0, 0, 0.596);
+/* Base Reset & Styling */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  line-height: 1.6;
+  padding-top: 110px; /* Accommodate the fixed double header */
+  scroll-behavior: smooth;
+}
+
+/* ==========================================================================
+   Header and Fixed Navigation
+   ========================================================================== */
+.site-header {
   position: fixed;
-  align-items: center;
-  justify-content: center;
   top: 0;
   left: 0;
   right: 0;
-  height: 50px;
-  display: flex;
-  padding: 0 10px;
-  bottom: 0;
-  overflow: hidden;
+  z-index: 1000;
+  background-color: rgba(251, 249, 246, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-pale);
+  box-shadow: 0 2px 15px rgba(117, 104, 125, 0.04);
 }
 
-.navbar form {
+.navbar {
+  max-width: 1200px;
+  margin: 0 auto;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  flex-wrap: wrap;
+  gap: 15px;
 }
-#searchInput {
-  background-color: #fff;
-  border: none;
-  border-radius: 5px 0 0 5px;
-  padding: 10px;
-  font-size: 14px;
-  outline: none;
-  margin: 0;
-  float: right;
-  background-color: rgba(128, 0, 128, 0.5);
-  color: white;
-  text-shadow: 0 0 10px purple;
-  box-shadow: 0 0 10px white;
-  transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-  }
-  
-  #searchInput:hover {
-  background-color: rgba(128, 0, 128, 0.7);
-  box-shadow: 0 0 20px white;
-  }
 
 #glow-box {
-  background-color: transparent;
-  color: white;
-  text-shadow: 0 0 5px rgb(150, 34, 165), 0 0 5px rgba(128, 0, 128, 0.288);
-  outline: 9px rgba(128, 0, 128, 0.288);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: auto;
-  padding-left: 1%;
+  font-family: "Georgia", serif;
+  font-size: 1.5rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  color: var(--text-main);
+  text-shadow: 0 0 10px rgba(150, 123, 182, 0.25);
 }
 
-#random-scroll-button {
-  background-color: rgba(128, 0, 128, 0.5);
-  color: white;
-  text-shadow: 0 0 10px purple;
-  box-shadow: 0 0 10px white;
+.search-controls {
   display: flex;
-  margin: 10px;
-  border-radius: 50%;
-}
-#random-scroll-button:hover {
-  box-shadow: 0 0 45px rgb(255, 96, 96);
-}
-#glow-box-home {
-  background-color: rgba(128, 0, 128, 0.5);
-  color: white;
-  text-shadow: 0 0 10px purple;
-  box-shadow: 0 0 10px white;
-  padding: 5px;
-  display: flex;
-  justify-content: center;
   align-items: center;
-}
-#glow-box-home:hover {
-  box-shadow: 0 0 15px rgb(199, 43, 219);
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
+#searchInput {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-pale);
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  color: var(--text-main);
+  outline: none;
+  min-width: 220px;
+  transition: var(--transition-smooth);
+}
+
+#searchInput:focus {
+  border-color: var(--accent-purple);
+  box-shadow: 0 0 8px rgba(150, 123, 182, 0.2);
+}
+
+/* Button Refinements */
 button {
-  background-color: #000;
-  border: none;
-  border-radius: 0 5px 5px 0;
-  color: #fff;
-  padding: 10px 20px;
-  font-size: 14px;
+  background-color: var(--color-lavender);
+  color: var(--text-main);
+  border: 1px solid var(--border-pale);
+  border-radius: 20px;
+  padding: 8px 18px;
+  font-size: 0.85rem;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: none;
+  font-weight: 500;
+  transition: var(--transition-smooth);
 }
 
 button:hover {
-  box-shadow: 0 0 10px white;
+  background-color: var(--color-rose);
+  border-color: var(--accent-purple);
+  transform: translateY(-1px);
 }
 
-/* padding to the body to avoid covering content with the navbar */
-body {
-  padding-top: 50px;
+#searchButton {
+  background-color: var(--accent-purple);
+  color: #ffffff;
+  border: none;
 }
 
+#searchButton:hover {
+  background-color: #8266a1;
+  color: #ffffff;
+}
+
+#random-scroll-button {
+  background-color: var(--color-rose);
+}
+
+#random-scroll-button:hover {
+  background-color: #f7dee3;
+}
+
+/* Filter Navigation Bar */
+.filter-bar {
+  display: flex;
+  justify-content: center;
+  background-color: var(--bg-card);
+  border-top: 1px solid var(--border-pale);
+  padding: 8px 10px;
+  gap: 8px;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.filter-bar::-webkit-scrollbar {
+  display: none; /* Hide horizontal scrollbar for clean aesthetics */
+}
+
+.filter-btn {
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 15px;
+  padding: 5px 14px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.filter-btn.active {
+  background-color: var(--color-lavender);
+  border-color: var(--border-pale);
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   Hero & Layout Elements
+   ========================================================================== */
 .jumbotron {
-  background-color: #e9ecef;
+  max-width: 900px;
+  margin: 40px auto 20px auto;
+  padding: 40px 30px;
+  background: linear-gradient(135deg, var(--color-rose) 0%, var(--color-lavender) 100%);
+  border-radius: 16px;
   text-align: center;
-  padding: 5% 10%;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
+  box-shadow: var(--shadow-subtle);
+  border: 1px solid var(--border-pale);
 }
 
 .jumbotron h1 {
-  font-size: 3em;
-  font-weight: bold;
-  color: #495057;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+  font-family: "Georgia", serif;
+  font-size: 2.2rem;
+  color: var(--text-main);
+  margin-bottom: 10px;
+}
+
+.jumbotron h2 {
+  font-size: 1rem;
+  font-weight: normal;
+  color: var(--text-muted);
+  margin-bottom: 20px;
 }
 
 .jumbotron p {
-  font-size: 1.5em;
-  color: #868e96;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
-  margin-bottom: 2em;
+  font-size: 0.95rem;
+  color: var(--text-main);
+  max-width: 700px;
+  margin: 0 auto;
 }
 
-.jumbotron hr {
-  border-top: 1px solid #868e96;
-  margin-top: 2em;
-  margin-bottom: 2em;
-  width: 50%;
+/* ==========================================================================
+   Card System
+   ========================================================================== */
+.cards-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px;
 }
-.selected-div {
-  box-shadow: 0 0 10px 3px purple;
-}
-.footer {
-  position: bottom;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  background-color: rgb(118, 102, 102);
-  color: white;
+
+.section-divider {
+  font-family: "Georgia", serif;
+  font-size: 1.8rem;
+  color: var(--text-main);
   text-align: center;
+  margin: 60px 0 30px 0;
+  position: relative;
 }
-.homefooter {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  background-color: rgb(118, 102, 102);
+
+.section-divider::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 2px;
+  background-color: var(--accent-purple);
+  margin: 10px auto 0 auto;
+  opacity: 0.5;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+}
+
+/* Individual Card Styling (Mimics physical cards) */
+.tarot-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-pale);
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: var(--shadow-subtle);
+  transition: var(--transition-smooth);
+  position: relative;
+}
+
+.tarot-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-hover);
+  border-color: #ded1e6;
+}
+
+/* Categorized Left Borders */
+.tarot-card[data-category="major"] { border-left: 4px solid var(--accent-purple); }
+.tarot-card[data-category="scrolls"] { border-left: 4px solid #b3c5d7; }
+.tarot-card[data-category="roses"] { border-left: 4px solid #e2b2b8; }
+.tarot-card[data-category="forces"] { border-left: 4px solid #adcbb1; }
+.tarot-card[data-category="keys"] { border-left: 4px solid #ded39e; }
+
+/* Glowing highlight state for searched/focused cards */
+.tarot-card.selected-div {
+  animation: glowPulse 2s infinite alternate;
+  border-color: var(--accent-purple);
+}
+
+@keyframes glowPulse {
+  0% { box-shadow: 0 0 10px rgba(150, 123, 182, 0.2); }
+  100% { box-shadow: 0 0 25px rgba(150, 123, 182, 0.6); }
+}
+
+/* Inner Card Typography */
+.card-header {
+  margin-bottom: 18px;
+}
+
+.card-meta {
+  display: inline-block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.card-title {
+  font-family: "Georgia", serif;
+  font-size: 1.4rem;
+  color: var(--text-main);
+}
+
+.card-body p {
+  font-size: 0.95rem;
+  color: var(--text-main);
+  margin-bottom: 15px;
+}
+
+.card-body p:last-child {
+  margin-bottom: 0;
+}
+
+/* ==========================================================================
+   Footers
+   ========================================================================== */
+.site-footer {
+  background-color: var(--bg-card);
+  border-top: 1px solid var(--border-pale);
+  padding: 40px 20px;
+  text-align: center;
+  margin-top: 80px;
+}
+
+.site-footer p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 15px;
+}
+
+#glow-box-home {
+  font-size: 0.85rem;
+  text-decoration: none;
+  color: var(--text-main);
+  background-color: var(--color-lavender);
+  padding: 8px 18px;
+  border-radius: 15px;
+  border: 1px solid var(--border-pale);
+  transition: var(--transition-smooth);
+}
+
+#glow-box-home:hover {
+  background-color: var(--color-rose);
+}
+
+/* ==========================================================================
+   Responsive Mechanics (Mobile & Tablet)
+   ========================================================================== */
+@media only screen and (max-width: 768px) {
+  body {
+    padding-top: 150px; /* Add space for wrapped mobile menus */
+  }
+
+  .navbar {
+    justify-content: center;
+    padding: 10px;
+  }
+
+  .search-controls {
+    justify-content: center;
+    width: 100%;
+  }
+
+  #searchInput {
+    flex-grow: 1;
+  }
+
+  .jumbotron {
+    margin: 20px 15px;
+    padding: 25px 15px;
+  }
+
+  .jumbotron h1 {
+    font-size: 1.7rem;
+  }
+
+  .tarot-card {
+    padding: 20px;
+  }
 }
