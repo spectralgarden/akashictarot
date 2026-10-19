@@ -30,12 +30,50 @@
 }
 
 body {
+  position: relative;
+  isolation: isolate;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   background-color: var(--bg-main);
   color: var(--text-main);
   line-height: 1.6;
   padding-top: 110px; /* Accommodate the fixed double header */
   scroll-behavior: smooth;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 18% 20%, rgba(255, 172, 213, 0.2), transparent 48%),
+    radial-gradient(ellipse at 82% 72%, rgba(177, 143, 255, 0.13), transparent 52%);
+  animation: cosmic-pulse 9s ease-in-out infinite alternate;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 7px;
+  z-index: 2000;
+  pointer-events: none;
+  border: 2px solid transparent;
+  border-radius: 13px;
+  background:
+    linear-gradient(transparent, transparent) padding-box,
+    conic-gradient(from 35deg, #ae6dff, #ff83c8, #8de8ff, #c39aff, #ae6dff) border-box;
+  box-shadow: inset 0 0 20px rgba(177, 104, 255, 0.16), 0 0 18px rgba(233, 117, 255, 0.16);
+}
+
+body > * {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes cosmic-pulse {
+  from { opacity: 0.55; }
+  to { opacity: 1; }
 }
 
 /* ==========================================================================
@@ -62,6 +100,62 @@ body {
   padding: 12px 24px;
   flex-wrap: wrap;
   gap: 15px;
+}
+
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-logo-link {
+  display: inline-flex;
+  padding: 2px;
+  border-radius: 12px;
+  background: conic-gradient(from 35deg, #ae6dff, #ff83c8, #8de8ff, #c39aff, #ae6dff);
+  transition: var(--transition-smooth);
+}
+
+.brand-logo-link img {
+  display: block;
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  border-radius: 10px;
+  background: var(--bg-card);
+}
+
+.brand-logo-link:hover,
+.brand-logo-link:focus-visible {
+  box-shadow: 0 0 12px rgba(219, 112, 255, 0.7), 0 0 24px rgba(255, 132, 200, 0.48);
+  transform: translateY(-1px);
+}
+
+.site-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.site-links a {
+  padding: 7px 12px;
+  border: 1px solid var(--border-pale);
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(242, 237, 248, 0.9), rgba(250, 240, 242, 0.9));
+  color: var(--text-main);
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: var(--transition-smooth);
+}
+
+.site-links a:hover,
+.site-links a:focus-visible {
+  border-color: #bd8bdb;
+  box-shadow: 0 0 14px rgba(206, 112, 255, 0.34);
+  color: #684c89;
 }
 
 #glow-box {
@@ -337,14 +431,38 @@ button:hover {
 /* ==========================================================================
    Responsive Mechanics (Mobile & Tablet)
    ========================================================================== */
+@media only screen and (max-width: 1100px) {
+  body {
+    padding-top: 165px;
+  }
+
+  .navbar {
+    justify-content: center;
+  }
+}
+
 @media only screen and (max-width: 768px) {
   body {
-    padding-top: 150px; /* Add space for wrapped mobile menus */
+    padding-top: 0;
+  }
+
+  .site-header {
+    position: sticky;
   }
 
   .navbar {
     justify-content: center;
     padding: 10px;
+  }
+
+  .logo-area {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .site-links {
+    width: 100%;
+    flex-wrap: wrap;
   }
 
   .search-controls {
@@ -367,5 +485,18 @@ button:hover {
 
   .tarot-card {
     padding: 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before {
+    animation: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
   }
 }
