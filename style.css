@@ -36,7 +36,7 @@ body {
   background-color: var(--bg-main);
   color: var(--text-main);
   line-height: 1.6;
-  padding-top: 110px; /* Accommodate the fixed double header */
+  padding-top: 0;
   scroll-behavior: smooth;
 }
 
@@ -79,10 +79,10 @@ body > * {
 }
 
 /* ==========================================================================
-   Header and Fixed Navigation
+   Header and Sticky Navigation
    ========================================================================== */
 .site-header {
-  position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
   right: 0;
@@ -91,6 +91,34 @@ body > * {
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--border-pale);
   box-shadow: 0 2px 15px rgba(117, 104, 125, 0.04);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 12px;
+  z-index: 1100;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text-main);
+  box-shadow: var(--shadow-hover);
+}
+
+.skip-link:focus {
+  top: 12px;
 }
 
 .navbar {
@@ -174,6 +202,7 @@ body > * {
   align-items: center;
   gap: 10px;
   flex-wrap: wrap;
+  margin: 0;
 }
 
 #searchInput {
@@ -184,8 +213,12 @@ body > * {
   font-size: 0.9rem;
   color: var(--text-main);
   outline: none;
-  min-width: 220px;
+  min-width: min(220px, 100%);
   transition: var(--transition-smooth);
+}
+
+#searchInput::-webkit-search-cancel-button {
+  cursor: pointer;
 }
 
 #searchInput:focus {
@@ -263,7 +296,24 @@ button:hover {
   font-weight: 600;
 }
 
-/* ==========================================================================
+.filter-btn:focus-visible,
+button:focus-visible,
+a:focus-visible,
+#searchInput:focus-visible {
+  outline: 3px solid #684c89;
+  outline-offset: 3px;
+}
+
+.noscript-note {
+  max-width: 1100px;
+  margin: 18px auto 0;
+  padding: 12px 18px;
+  border: 1px solid var(--border-pale);
+  border-radius: 10px;
+  background: var(--bg-card);
+}
+
+/* ========================================================================== 
    Hero & Layout Elements
    ========================================================================== */
 .jumbotron {
@@ -307,6 +357,19 @@ button:hover {
   padding: 20px;
 }
 
+.search-status {
+  min-height: 1.6em;
+  margin: 0 0 16px;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.arcana-section[hidden],
+.tarot-card[hidden] {
+  display: none !important;
+}
+
 .section-divider {
   font-family: "Georgia", serif;
   font-size: 1.8rem;
@@ -334,6 +397,7 @@ button:hover {
 
 /* Individual Card Styling (Mimics physical cards) */
 .tarot-card {
+  min-width: 0;
   background-color: var(--bg-card);
   border: 1px solid var(--border-pale);
   border-radius: 12px;
@@ -369,11 +433,34 @@ button:hover {
 
 /* Inner Card Typography */
 .card-header {
-  margin-bottom: 18px;
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  align-items: center;
+  column-gap: 13px;
+  margin-bottom: 14px;
+}
+
+.card-icon {
+  display: grid;
+  grid-row: 1 / span 2;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--border-pale);
+  border-radius: 13px;
+  background: linear-gradient(145deg, #fff, var(--color-lavender));
+  color: #684c89;
+  font-family: Georgia, serif;
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+.card-heading {
+  min-width: 0;
 }
 
 .card-meta {
-  display: inline-block;
+  display: block;
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 1.5px;
@@ -384,7 +471,7 @@ button:hover {
 
 .card-title {
   font-family: "Georgia", serif;
-  font-size: 1.4rem;
+  font-size: clamp(1.15rem, 2.5vw, 1.4rem);
   color: var(--text-main);
 }
 
@@ -392,6 +479,18 @@ button:hover {
   font-size: 0.95rem;
   color: var(--text-main);
   margin-bottom: 15px;
+}
+
+.card-body .reflection-prompt {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-pale);
+  color: var(--text-muted);
+  font-size: 0.88rem;
+}
+
+.reflection-prompt strong {
+  color: var(--text-main);
 }
 
 .card-body p:last-child {
@@ -433,9 +532,14 @@ button:hover {
 /* ==========================================================================
    Responsive Mechanics (Mobile & Tablet)
    ========================================================================== */
-@media only screen and (max-width: 1100px) {
+@media only screen and (max-width: 1199px) {
   body {
-    padding-top: 165px;
+    padding-top: 0;
+  }
+
+  .site-header {
+    position: sticky;
+    top: 0;
   }
 
   .navbar {
@@ -467,6 +571,12 @@ button:hover {
     flex-wrap: wrap;
   }
 
+  .filter-bar {
+    flex-wrap: wrap;
+    justify-content: center;
+    white-space: normal;
+  }
+
   .search-controls {
     justify-content: center;
     width: 100%;
@@ -488,6 +598,25 @@ button:hover {
   .tarot-card {
     padding: 20px;
   }
+
+  .search-controls {
+    gap: 8px;
+  }
+
+  .search-controls button {
+    padding: 8px 12px;
+  }
+}
+
+@media (min-width: 900px) {
+  .cards-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .tarot-card {
+    padding: 22px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -500,5 +629,9 @@ button:hover {
   *::after {
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
+  }
+
+  .tarot-card.selected-div {
+    animation: none;
   }
 }

@@ -1,155 +1,112 @@
 document.addEventListener("DOMContentLoaded", () => {
+    const searchForm = document.getElementById("search-form");
     const searchInput = document.getElementById("searchInput");
-    const searchButton = document.getElementById("searchButton");
-    const randomScrollButton = document.getElementById("random-scroll-button");
-    const filterButtons = document.querySelectorAll(".filter-btn");
-    const tarotCards = document.querySelectorAll(".tarot-card");
-    const arcanaSections = document.querySelectorAll(".arcana-section");
+    const clearSearchButton = document.getElementById("clear-search-button");
+    const randomCardButton = document.getElementById("random-scroll-button");
+    const searchStatus = document.getElementById("search-status");
+    const filterButtons = Array.from(document.querySelectorAll(".filter-btn"));
+    const cards = Array.from(document.querySelectorAll(".tarot-card"));
+    const sections = Array.from(document.querySelectorAll(".arcana-section"));
 
-    // Clean Input Focus Lifecycle
-    const originalPlaceholder = searchInput.placeholder;
-    searchInput.addEventListener("focus", () => {
-        searchInput.placeholder = "";
-    });
-    searchInput.addEventListener("blur", () => {
-        if (!searchInput.value.trim()) {
-            searchInput.placeholder = originalPlaceholder;
+    if (
+        !(searchForm instanceof HTMLFormElement) ||
+        !(searchInput instanceof HTMLInputElement) ||
+        !(clearSearchButton instanceof HTMLButtonElement) ||
+        !(randomCardButton instanceof HTMLButtonElement) ||
+        !searchStatus ||
+        cards.length === 0
+    ) {
+        throw new Error("The Akashic Tarot directory controls or card entries are missing.");
+    }
+
+    let activeCategory = "all";
+
+    function normalize(value) {
+        return value
+            .normalize("NFKD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .toLocaleLowerCase();
+    }
+
+    function updateDirectory() {
+        const query = normalize(searchInput.value.trim());
+        const visibleCards = [];
+
+        cards.forEach((card) => {
+            const matchesCategory =
+                activeCategory === "all" || card.dataset.category === activeCategory;
+            const matchesQuery = !query || normalize(card.textContent || "").includes(query);
+            const isVisible = matchesCategory && matchesQuery;
+
+            card.hidden = !isVisible;
+            if (isVisible) visibleCards.push(card);
+        });
+
+        sections.forEach((section) => {
+            section.hidden = !section.querySelector(".tarot-card:not([hidden])");
+        });
+
+        if (visibleCards.length === 0) {
+            searchStatus.textContent = "No cards match your search. Try another name, theme, or suit.";
+        } else if (query || activeCategory !== "all") {
+            searchStatus.textContent = `Showing ${visibleCards.length} of ${cards.length} cards.`;
+        } else {
+            searchStatus.textContent = `Showing all ${cards.length} cards.`;
         }
-    });
 
-    // Reset Highlighting Utility
-    function removeHighlights() {
-        tarotCards.forEach(card => card.classList.remove("selected-div"));
+        return visibleCards;
     }
 
-    // Standard Reset Filter Behavior
-    function resetToAllFilter() {
-        filterButtons.forEach(btn => btn.classList.remove("active"));
-        const allBtn = document.querySelector('.filter-btn[data-filter="all"]');
-        if (allBtn) allBtn.classList.add("active");
-
-        // Make all cards and their layout structures visible again
-        tarotCards.forEach(card => card.style.display = "");
-        arcanaSections.forEach(sec => sec.style.display = "");
+    function clearHighlights() {
+        cards.forEach((card) => card.classList.remove("selected-div"));
     }
 
-    // Smooth-Scroll Positioning Helper
-    function executeVisualFocus(targetCard) {
-        targetCard.classList.add("selected-div");
-        targetCard.scrollIntoView({
-            behavior: "smooth",
+    function focusCard(card) {
+        clearHighlights();
+        card.classList.add("selected-div");
+        card.scrollIntoView({
+            behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
             block: "center",
             inline: "nearest"
         });
     }
 
-    // Unified Intelligent Match Search Handler
-    function runDeckSearch(event) {
-        if (event) event.preventDefault();
-
-        const query = searchInput.value.trim().toLowerCase();
-        if (!query) return;
-
-        removeHighlights();
-        let finalMatch = null;
-
-        // Stage 1: Attempt exact / close matching directly against card titles
-        for (const card of tarotCards) {
-            const titleElem = card.querySelector(".card-title");
-            if (titleElem && titleElem.textContent.toLowerCase().includes(query)) {
-                finalMatch = card;
-                break;
-            }
-        }
-
-        // Stage 2: Fallback search matches through entire description text bodies
-        if (!finalMatch) {
-            for (const card of tarotCards) {
-                if (card.textContent.toLowerCase().includes(query)) {
-                    finalMatch = card;
-                    break;
-                }
-            }
-        }
-
-        // Execution of Match Scroll & Visibility
-        if (finalMatch) {
-            const activeFilterButton = document.querySelector(".filter-btn.active");
-            const currentFilter = activeFilterButton ? activeFilterButton.dataset.filter : "all";
-            const targetCategory = finalMatch.dataset.category;
-
-            // If the matched card is currently hidden, reset visual filter limits to display it
-            if (currentFilter !== "all" && currentFilter !== targetCategory) {
-                resetToAllFilter();
-            }
-
-            executeVisualFocus(finalMatch);
-        }
-    }
-
-    // Expose search globally to fulfill legacy HTML element inline click attributes safely
-    window.search = runDeckSearch;
-
-    // Direct Event Listeners for Search
-    searchInput.addEventListener("keypress", (e) => {
-        if (e.key === "Enter") {
-            runDeckSearch(e);
-        }
+    searchForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const visibleCards = updateDirectory();
+        if (visibleCards.length > 0) focusCard(visibleCards[0]);
     });
 
-    if (searchButton) {
-        searchButton.addEventListener("click", runDeckSearch);
-    }
+    searchInput.addEventListener("input", () => {
+        clearHighlights();
+        updateDirectory();
+    });
 
-    // Context-Aware Random Selector
-    if (randomScrollButton) {
-        randomScrollButton.addEventListener("click", () => {
-            // Pick only from cards currently visible on screen to preserve filter context
-            const activePool = Array.from(tarotCards).filter(card => {
-                return window.getComputedStyle(card).display !== "none";
+    clearSearchButton.addEventListener("click", () => {
+        searchInput.value = "";
+        clearHighlights();
+        updateDirectory();
+        searchInput.focus();
+    });
+
+    filterButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+            activeCategory = button.dataset.filter || "all";
+            filterButtons.forEach((filterButton) => {
+                const isActive = filterButton === button;
+                filterButton.classList.toggle("active", isActive);
+                filterButton.setAttribute("aria-pressed", String(isActive));
             });
-
-            if (activePool.length === 0) return;
-
-            const rollIndex = Math.floor(Math.random() * activePool.length);
-            const rolledCard = activePool[rollIndex];
-
-            removeHighlights();
-            executeVisualFocus(rolledCard);
+            clearHighlights();
+            updateDirectory();
         });
-    }
+    });
 
-    // Category / Suit Actionable Filter Routing
-    if (filterButtons.length > 0) {
-        filterButtons.forEach(button => {
-            button.addEventListener("click", () => {
-                const requestedFilter = button.dataset.filter;
+    randomCardButton.addEventListener("click", () => {
+        const visibleCards = updateDirectory();
+        if (visibleCards.length === 0) return;
 
-                // Adjust Navigation UI Active Classes
-                filterButtons.forEach(btn => btn.classList.remove("active"));
-                button.classList.add("active");
-
-                removeHighlights();
-
-                tarotCards.forEach(card => {
-                    const cardCategory = card.dataset.category;
-                    if (requestedFilter === "all" || cardCategory === requestedFilter) {
-                        card.style.display = "";
-                    } else {
-                        card.style.display = "none";
-                    }
-                });
-
-                // Dynamically hide empty arcana sections if they have no visible child elements
-                arcanaSections.forEach(section => {
-                    const sectionType = section.dataset.section;
-                    if (requestedFilter === "all" || sectionType === requestedFilter) {
-                        section.style.display = "";
-                    } else {
-                        section.style.display = "none";
-                    }
-                });
-            });
-        });
-    }
+        const randomIndex = Math.floor(Math.random() * visibleCards.length);
+        focusCard(visibleCards[randomIndex]);
+    });
 });

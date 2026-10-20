@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://spectralgarden.github.io/akashictarot/sitemap.xml
+Sitemap: https://akashictarot.spectralgarden.net/sitemap.xml
