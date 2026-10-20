@@ -9,7 +9,7 @@ Built as a static web portal using HTML, CSS, and JavaScript—everything runs i
 - 🧠 **Client-Side Simplicity**: No backend, no clutter—just pure ritual logic.
 
 ## 🌐 Live Demo
-[https://spectralgarden.github.io/akashictarot/]
+https://akashictarot.spectralgarden.net/
 
 ## 🧪 Tech Stack
 - HTML
